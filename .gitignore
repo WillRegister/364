@@ -1,0 +1,24 @@
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+
+# Mac
+.DS_Store
+
+# Logs
+*.log
+
+# data
+orbit_angles.csv
+
+# Env
+.env
+
+# Vite dist
+ui/dist/
+
