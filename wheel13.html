@@ -1,26 +1,72 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Will's 13-Month Calendar Wheel</title>
   <style>
     body { font-family: sans-serif; text-align: center; background: #111; color: #fff; }
     svg { width: 90vmin; height: 90vmin; margin-top: 20px; }
+    .sector { transition: transform 0.3s; }
     .sector:hover { fill: #66f; cursor: pointer; }
+    .sector.active { transform: scale(1.05); }
     .label { font-size: 4px; fill: white; text-anchor: middle; dominant-baseline: middle; }
+    .overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); padding: 10px; border-radius: 4px; color: #fff; }
+    .overlay ul { list-style: none; padding: 0; margin: 0; }
+    .overlay li { margin: 2px 0; }
+    .close-btn { cursor: pointer; color: #f88; margin-bottom: 5px; }
   </style>
 </head>
 <body>
   <h1>Will's 13-Month Calendar</h1>
   <p>Click a month to view its 28 days</p>
   <svg viewBox="-100 -100 200 200">
-    <g id="wheel">
-      <!-- Generated sectors will go here -->
-    </g>
-  </svg>  <script>
+    <g id="wheel"></g>
+  </svg>
+  <script>
     const months = 13;
     const radius = 90;
     const anglePerMonth = 360 / months;
     const wheel = document.getElementById('wheel');
+
+    const monthsData = Array.from({ length: months }, (_, m) => ({
+      name: `Month ${m + 1}`,
+      days: Array.from({ length: 28 }, (_, d) => {
+        const dayOfYear = m * 28 + d + 1;
+        return { day: d + 1, dayOfYear, week: Math.ceil(dayOfYear / 7) };
+      })
+    }));
+
+    function showMonth(index, path) {
+      document.querySelectorAll('.sector.active').forEach(p => p.classList.remove('active'));
+      path.classList.add('active');
+
+      const existing = document.getElementById('overlay');
+      if (existing) existing.remove();
+
+      const data = monthsData[index];
+      const overlay = document.createElement('div');
+      overlay.id = 'overlay';
+      overlay.className = 'overlay';
+
+      const close = document.createElement('div');
+      close.className = 'close-btn';
+      close.textContent = 'Close';
+      close.onclick = () => overlay.remove();
+      overlay.appendChild(close);
+
+      const title = document.createElement('h2');
+      title.textContent = data.name;
+      overlay.appendChild(title);
+
+      const list = document.createElement('ul');
+      data.days.forEach(d => {
+        const li = document.createElement('li');
+        li.textContent = `Day ${d.day} – DOY ${d.dayOfYear} – Week ${d.week}`;
+        list.appendChild(li);
+      });
+      overlay.appendChild(list);
+      document.body.appendChild(overlay);
+    }
 
     for (let i = 0; i < months; i++) {
       const startAngle = i * anglePerMonth;
@@ -37,10 +83,9 @@
       path.setAttribute('d', d);
       path.setAttribute('fill', `hsl(${i * (360 / months)}, 70%, 50%)`);
       path.classList.add('sector');
-      path.addEventListener('click', () => alert(`Month ${i + 1}`));
+      path.addEventListener('click', () => showMonth(i, path));
       wheel.appendChild(path);
 
-      // Add label
       const labelAngle = (startAngle + endAngle) / 2;
       const labelX = (radius - 20) * Math.cos((Math.PI / 180) * labelAngle);
       const labelY = (radius - 20) * Math.sin((Math.PI / 180) * labelAngle);
@@ -51,5 +96,6 @@
       label.textContent = `M${i + 1}`;
       wheel.appendChild(label);
     }
-  </script></body>
+  </script>
+</body>
 </html>
