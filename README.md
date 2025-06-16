@@ -1,3 +1,4 @@
+<<<<<<< codex/set-up-skyfield-for-astronomical-data
 # 364 Calendar Tools
 
 This repository contains a simple HTML wheel for a 13‑month calendar and
@@ -27,6 +28,8 @@ python generate_orbit_angles.py
 
 The results are saved to `orbit_angles.csv`.
 =======
+=======
+>>>>>>> main
 # 364 Day Calendar
 
 This repository contains an experimental 13‑month calendar where each month has exactly 28 days. The scheme keeps weeks aligned so every month starts on a Monday and ends on a Sunday.
