@@ -8,7 +8,10 @@ Install dependencies and run the CLI:
 
 ```bash
 npm install
-node cli/index.js
+# generate ritual calendar data
+node cli/index.js compute 2025 ritual
+# generate Gregorian calendar data
+node cli/index.js compute 2025 gregorian
 ```
 
 To open the optional web interface, open `ui/index.html` in a browser.
