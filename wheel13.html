@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Will's 13-Month Calendar Wheel</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; background: #111; color: #fff; }
+    svg { width: 90vmin; height: 90vmin; margin-top: 20px; }
+    .sector:hover { fill: #66f; cursor: pointer; }
+    .label { font-size: 4px; fill: white; text-anchor: middle; dominant-baseline: middle; }
+  </style>
+</head>
+<body>
+  <h1>Will's 13-Month Calendar</h1>
+  <p>Click a month to view its 28 days</p>
+  <svg viewBox="-100 -100 200 200">
+    <g id="wheel">
+      <!-- Generated sectors will go here -->
+    </g>
+  </svg>  <script>
+    const months = 13;
+    const radius = 90;
+    const anglePerMonth = 360 / months;
+    const wheel = document.getElementById('wheel');
+
+    for (let i = 0; i < months; i++) {
+      const startAngle = i * anglePerMonth;
+      const endAngle = startAngle + anglePerMonth;
+      const largeArc = anglePerMonth > 180 ? 1 : 0;
+
+      const x1 = radius * Math.cos((Math.PI / 180) * startAngle);
+      const y1 = radius * Math.sin((Math.PI / 180) * startAngle);
+      const x2 = radius * Math.cos((Math.PI / 180) * endAngle);
+      const y2 = radius * Math.sin((Math.PI / 180) * endAngle);
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const d = `M0 0 L${x1} ${y1} A${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+      path.setAttribute('d', d);
+      path.setAttribute('fill', `hsl(${i * (360 / months)}, 70%, 50%)`);
+      path.classList.add('sector');
+      path.addEventListener('click', () => alert(`Month ${i + 1}`));
+      wheel.appendChild(path);
+
+      // Add label
+      const labelAngle = (startAngle + endAngle) / 2;
+      const labelX = (radius - 20) * Math.cos((Math.PI / 180) * labelAngle);
+      const labelY = (radius - 20) * Math.sin((Math.PI / 180) * labelAngle);
+      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      label.setAttribute('x', labelX);
+      label.setAttribute('y', labelY);
+      label.setAttribute('class', 'label');
+      label.textContent = `M${i + 1}`;
+      wheel.appendChild(label);
+    }
+  </script></body>
+</html>
