@@ -16,7 +16,8 @@ calendar-cli/
 ```
 cd calendar-cli
 npm install
-node cli/index.js compute 2025  # generate ephemeris for the year
+node cli/index.js compute 2025 ritual     # 364-day ritual calendar
+node cli/index.js compute 2025 gregorian  # 365-day Gregorian calendar
 ```
 
 Open `ui/index.html` in a browser to view the generated data.

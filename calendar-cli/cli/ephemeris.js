@@ -1,5 +1,9 @@
 const Astronomy = require('astronomy-engine');
 
+// Approximate ecliptic longitude of the galactic center (Sagittarius A*)
+// calculated from RA 17h45m40.04s, Dec -29°00'28.1".
+const SAGITTARIUS_A_LON = 266.851728;
+
 function summerSolsticeFirstMonday(year) {
   const seasons = Astronomy.Seasons(year);
   const solstice = seasons.jun_solstice.date;
@@ -10,10 +14,18 @@ function summerSolsticeFirstMonday(year) {
   return new Astronomy.AstroTime(d);
 }
 
-function computeOrbits(year = new Date().getUTCFullYear()) {
-  const start = summerSolsticeFirstMonday(year);
-  const sunVec = Astronomy.GeoVector(Astronomy.Body.Sun, start, false);
-  const sunLon = Astronomy.Ecliptic(sunVec).elon;
+function gregorianStart(year) {
+  return new Astronomy.AstroTime(new Date(Date.UTC(year, 0, 1)));
+}
+
+function computeOrbits(year = new Date().getUTCFullYear(), calendar = 'ritual') {
+  const start = calendar === 'gregorian'
+    ? gregorianStart(year)
+    : summerSolsticeFirstMonday(year);
+  const days = calendar === 'gregorian'
+    ? 365
+    : 364;
+  const gcLon = SAGITTARIUS_A_LON;
   const planets = [
     { body: Astronomy.Body.Mercury, name: 'mercury' },
     { body: Astronomy.Body.Venus, name: 'venus' },
@@ -23,7 +35,6 @@ function computeOrbits(year = new Date().getUTCFullYear()) {
     { body: Astronomy.Body.Saturn, name: 'saturn' },
     { body: Astronomy.Body.Moon, name: 'moon' }
   ];
-  const days = 364;
   const records = [];
   for (let day = 0; day < days; day++) {
     const t = start.AddDays(day);
@@ -31,12 +42,12 @@ function computeOrbits(year = new Date().getUTCFullYear()) {
     for (const p of planets) {
       const vec = Astronomy.GeoVector(p.body, t, false);
       const lon = Astronomy.Ecliptic(vec).elon;
-      const rel = (lon - sunLon + 360) % 360;
+      const rel = (lon - gcLon + 360) % 360;
       row[p.name] = Number(rel.toFixed(6));
     }
     records.push(row);
   }
-  return { start: start.date.toISOString(), records };
+  return { calendar, start: start.date.toISOString(), records };
 }
 
 module.exports = { computeOrbits };
