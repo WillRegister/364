@@ -1,6 +1,6 @@
 # Time Pope Terminal Calendar
 
-This repository contains a CLI-first web project implementing a symbolic 360° orbit system and a 364-day ritual calendar.
+This repository contains a CLI-first web project implementing a symbolic 360° orbit system and a 364-day ritual calendar. Both calendar modes start on the first Monday after the summer solstice.
 
 ## Structure
 
@@ -20,4 +20,4 @@ node cli/index.js compute 2025 ritual     # 364-day ritual calendar
 node cli/index.js compute 2025 gregorian  # 365-day Gregorian calendar
 ```
 
-Open `ui/index.html` in a browser to view the generated data.
+The ritual calendar uses 13 months with 7-day weeks and 4 weeks per month. The CLI output includes `month`, `week` and `weekday` fields for this mode. Open `ui/index.html` in a browser to view the generated data.

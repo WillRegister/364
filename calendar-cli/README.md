@@ -1,6 +1,6 @@
 # Time Pope Terminal Calendar
 
-This project is a CLI-first calendrical system based on a symbolic 360° orbit. It normalizes planetary year cycles and implements a 364-day ritual calendar. The CLI can download ephemeris data and compute planetary positions. The optional UI provides a simple browser-based view.
+This project is a CLI-first calendrical system based on a symbolic 360° orbit. It normalizes planetary year cycles and implements a 364-day ritual calendar. Calendar data for both modes begins on the first Monday after the summer solstice. The CLI can download ephemeris data and compute planetary positions. The optional UI provides a simple browser-based view.
 
 ## Setup
 
@@ -14,4 +14,4 @@ node cli/index.js compute 2025 ritual
 node cli/index.js compute 2025 gregorian
 ```
 
-To open the optional web interface, open `ui/index.html` in a browser.
+The ritual calendar divides the 364-day year into 13 months with 7-day weeks and 4 weeks per month. The JSON output includes `month`, `week` and `weekday` fields. To open the optional web interface, open `ui/index.html` in a browser.
