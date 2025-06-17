@@ -14,4 +14,14 @@ node cli/index.js compute 2025 ritual
 node cli/index.js compute 2025 gregorian
 ```
 
-The ritual calendar divides the 364-day year into 13 months with 7-day weeks and 4 weeks per month. The JSON output includes `month`, `week` and `weekday` fields. To open the optional web interface, open `ui/index.html` in a browser.
+The ritual calendar divides the 364-day year into 13 months with 7-day weeks and 4 weeks per month. The JSON output includes `month`, `week` and `weekday` fields.
+
+### Viewing the data in a browser
+
+Serve the `calendar-cli` directory so the static page can load the generated JSON files. For example:
+
+```bash
+python3 -m http.server
+```
+
+Then open <http://localhost:8000/ui/> in your browser. Opening `index.html` directly from disk won't work because the page uses `fetch` to request the JSON data.
